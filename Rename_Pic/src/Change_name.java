@@ -24,8 +24,8 @@ public class Change_name extends JFrame implements ActionListener
 	JTextArea directions;
 	TextField text = new TextField(20);
 	File path;
-	int cnt = 0;
 	File directory = null;
+	static int cnt = 0;
 		
 	public Change_name(String s)
 	{
@@ -103,34 +103,27 @@ public class Change_name extends JFrame implements ActionListener
 			directory.mkdirs();
 		}else if(e.getSource()== change) {
 			//When a new item is added to the folder
-			while(directory.list().length != cnt)
-			{
-				System.out.println(cnt);
-				cnt = updtNme(directory,cnt);// update its name
-			}//end while
+				updtNme(directory);// update its name
 		}//End if
 		JOptionPane.showMessageDialog( Change_name.this,
                 "Operation Finished!",
                 "About", JOptionPane.PLAIN_MESSAGE );
 	}//end actionPerformed
 	
-	static int updtNme(File d, int cnt)
+	static void updtNme(File d)
 	{
 		String[] list = d.list();
 		String nuname = d.getAbsolutePath();
 		String name = nuname.substring(nuname.lastIndexOf(File.separator)+1); //Name of current folder
-		int check = cnt-1; //previous count
-		String chekstr = name + "-" + check + ".jpg";//Name of previous renamed file
-		if(list[cnt].equals(chekstr))//If the latest file is the renamed file go to the first file
-			nuname = nuname + "\\" + list[0];
-		else
-			nuname = nuname + "\\" + list[cnt];
-		File i = new File(nuname);		
-		nuname = d.getAbsolutePath();
-		nuname = nuname + "\\" + name + "-" + cnt + ".jpg"; //Rename file to folder name plus # created
-		File nuPic = new File(nuname);	
-		i.renameTo(nuPic);//Is it really this easy?
-		cnt++;
-		return cnt;
+		while(cnt != list.length)
+		{	
+			String fname = nuname + "\\" + list[0]; //Name of current File
+			File i = new File(fname);	
+			fname = nuname + "\\" + name + "-" + cnt + ".jpg"; //Rename file to folder name plus # created
+			File nuPic = new File(fname);	
+			i.renameTo(nuPic);//Is it really this easy?
+			list = d.list();
+			cnt++;
+		}//end while
 	}//end updtName
 }//end Class
