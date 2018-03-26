@@ -1,20 +1,12 @@
 import java.awt.Desktop;
-import java.awt.Image;
 import java.io.File;
-import java.io.FilenameFilter;
-/*Use string for search for file with same name in folders
-*Probably use XML look at previous code to see how
-**/
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 
 public class Search4File 
 {
-	final String[] EXTENSIONS = new String[]{"gif", "png", "bmp", "doc", "jpg", "mp4"};
+	//Add any extension for a file you would like to search
+	final String[] EXTENSIONS = new String[]{"gif", "png", "bmp", "doc", "jpg", "mp4","js","docx"};
 	public static String[] List = null;
 	File dir;
 	Desktop desktop = Desktop.getDesktop();
@@ -31,7 +23,8 @@ public class Search4File
 		{
 			List = dir.list();
 			int all = List.length;
-			String nuname = "";			
+			String nuname = "";
+			
 		}else{
 			List = dir.list();
 			List[0] = "This is not a directory. Use the OPEN Button!";
@@ -57,77 +50,16 @@ public class Search4File
       return moreFiles;
 	 }//end searchHarder
 	
-	/* The function that is called by the SEARCH Button. Uses a name
-	 * and extension to find picture.
-	 */
-	void searchThrough(String str, File direct) throws IOException 
-	{	
-		dir = direct;
-		String nuname = null;
-		File [] moreFiles = updateList(dir);
-			for(File more : moreFiles)
-			{
-				if (more.isDirectory()){ //Check for nested Folder. If folder exist
-					searchThrough(str,more);
-				 }else{
-					nuname = more.getName();
-					String name = nuname.substring(0, nuname.length() - 4);
-					if(name.equals(str)) { //If element in directory equals search String
-						desktop.open(more); //Open it
-						break;			
-						}//end if
-				 }//end if
-			}//end for
-			System.out.println("The FIle does not exist"); //Need to change for GUI
-	}//End search
-
-/*Updates the directory after every search to point to
-The directory chosen in search*/
-File updateDir(File d, String update, char choice)
-{
-	File nuDir = null;
-	if (choice == 'a')
-	{
-		String nuname = d.getAbsolutePath();
-		nuname = nuname + "\\" + update;
-		 nuDir = new File(nuname);
-		
-	}else if (choice == 's') {
-		String path = d.getAbsolutePath();
-		while('\'' != path.charAt(path.length() - 1)) //While the last character of nuName does not equal backslash
-				{
-					path = path.substring(0, path.length() - 1);
-				}
-		path = path.substring(0, path.length() - 1); // to delete the backslash
-		nuDir = new File(path);			
-	}//end if
-	if (!nuDir.isDirectory())
-		{
-			nuDir = d;
-		}
-	return nuDir;
-}//End UpdateDir
-	File [] updateList(File f)
-	{
-		File [] list= null;
-		String st = f.getAbsolutePath();
-		{
-			list = new File(st).listFiles();
-		}
-		
-		return list;
-	}//End updateList
-	
 	/*Opens the File that has been requested*/
 	void openFile(String name, File fle)
 	{
-		String nuname = fle.getAbsolutePath() + "\\";
+		String nuname = fle.getAbsolutePath();
+		fle = new File(nuname);
 		for (final String ext : EXTENSIONS) 
 		  {
               if (name.endsWith("." + ext))
               {	
-            	nuname = nuname + name;
-             	fle = new File(nuname); 	
+              	System.out.println(name);
               	try
               	{	                	   
               	    desktop.open(fle);
@@ -137,6 +69,68 @@ File updateDir(File d, String update, char choice)
                   }
               }//end if
 		  }//end for
-	}//End openFile
+	}
+	/*Updates the directory after every search to point to
+	The directory chosen in search*/
+	File updateDir(File d, String update)
+	{
+		String nuname = d.getAbsolutePath();
+		nuname = nuname + "\\" + update;
+		File nudir = new File(nuname);
+		if (!nudir.isDirectory())
+		{
+			nudir = d;
+		}
+		return nudir;
+	}
 
+	String searchThrough(String str, File direct) throws IOException 
+	{	
+		dir = direct;
+		File reset = direct;
+		String nuname = null;
+		File [] moreFiles = updateList(dir);
+		int a = 0, f = 0;
+		if (dir.isDirectory()) //Check if dir is a folder
+		{	
+			do{
+				nuname = moreFiles[a].getName();				
+				if (nuname.equals(str)) //If first element in directory equals string
+				{	
+					dir = updateDir(dir, nuname);
+					desktop.open(dir); // open it
+					break;
+			}else if (moreFiles[a].isDirectory()){ //else if first element in folder is another folder					
+					 dir = updateDir(dir,nuname); //Update Directory
+					 a = 0; // Reset count
+					 moreFiles = updateList(dir); //Update 
+			/*	}else if(dir.equals(lst)){ //If we reached the last item in the folder
+					if (nxt.isDirectory())
+					{
+						direct = updateDir(dir,moreFiles[f]); //return to original folder
+						dir = direct; //Move folders to next level
+						f++; //Update the count for the folders
+						a = 0; // Reset count
+					}else{
+						
+					}*/
+				}else{
+					a++; 
+				}//End if
+			}while(true);
+	    }//End if
+		return nuname;
+	}//End search
+	
+	File [] updateList(File f)
+	{
+		File [] list= null;
+		String st = f.getAbsolutePath();
+		{
+			list = new File(st).listFiles();
+		}
+		
+		return list;
+	}
+	
 }//End Class
