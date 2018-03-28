@@ -43,7 +43,7 @@ public class Picgui extends JFrame implements ActionListener
 		this.setTitle("Picture Modifier");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(400, 500);
-		title = new JLabel ("Search for Files and Folders");
+		title = new JLabel ("Choose file to Update");
 		title.setFont(new Font("Cooper black", Font.PLAIN, 23));		
 		reg = new JPanel();
 		pcpnl = new JPanel();
@@ -58,7 +58,6 @@ public class Picgui extends JFrame implements ActionListener
 		JMenu fileMenu = new JMenu( "File" );
 		JMenuBar bar = new JMenuBar();  // create menu bar
 		setJMenuBar( bar );  // set the menu bar for the JFrame	
-	    fileMenu.setMnemonic( 'F' );
 	    JMenuItem aboutItem = new JMenuItem( "About..." );
 	    aboutItem.setMnemonic( 'A' );
 	    aboutItem.addActionListener(
@@ -66,7 +65,7 @@ public class Picgui extends JFrame implements ActionListener
 	               public void actionPerformed( ActionEvent e )
 	               {
 	                  JOptionPane.showMessageDialog( Picgui.this,
-	                     "On January 7th 2018 I am pledging to finish"
+	                     "On January 7th 2018 I am pledging to finish "
 	                     + "this program before my birthday! When I do"
 	                     + " I will update this message.",
 	                     "About", JOptionPane.PLAIN_MESSAGE );
@@ -120,18 +119,10 @@ public class Picgui extends JFrame implements ActionListener
 	{
 		if(e.getSource()== opn)
 		{
-			if (text.getText().isEmpty() == true)
-			{		
-				JOptionPane.showMessageDialog( null,
-	                     "Sorry but there is no input here.\n"
-	                     + "Please add input if you want t"
-	                     + "use the search function.",
-	                     "Error", JOptionPane.ERROR_MESSAGE );				
-			} else {
-				String path = "C:\\Users\\Necro\\Pictures\\Freezas.jpg";
 				Picopen po = new Picopen();
 				//BufferedImage image = null;
 				try {
+					String path = po.getPath();
 					po.openPic(path);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -142,9 +133,7 @@ public class Picgui extends JFrame implements ActionListener
 				pcpnl.add(updt,BorderLayout.SOUTH);
 				this.remove(reg);
 				this.add(pcpnl);
-				this.validate();
-			}//End nested if
-			
+				this.validate();			
 		}else if(e.getSource()== opn2) {
 				if (text.getText().isEmpty() == true)
 				{		

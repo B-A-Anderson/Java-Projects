@@ -13,11 +13,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 
 //Nested Class for Dialog Box
 class picFrame extends JDialog 
@@ -55,13 +53,23 @@ class picFrame extends JDialog
 
 public class Picopen
 {
-	final String[] EXTENSIONS = new String[]{"png", "bmp", "jpg", "mp4"};
-	Desktop desktop = Desktop.getDesktop();
+	final String[] EXTENSIONS = new String[]{"png", "bmp", "jpg", "jpeg"};
+	
+	//Create a JFileChooser GUI to choose file.
+	JFileChooser choice = new JFileChooser( new File("C:\\Users\\Necro\\Pictures\\Descktop pics"));
 	
 	Picopen()
 	{
 		//Nothing needed here
 	}//End Constructor
+	
+	public String getPath()
+	{
+		String path = null;
+		int returnVal = choice.showOpenDialog(null);
+		
+		return path;
+	}
 	
 	//Open Picture using path given
 	void openPic(String s) throws IOException
