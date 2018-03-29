@@ -25,7 +25,6 @@ public class Picgui extends JFrame implements ActionListener
 	private JButton opn, opn2, updt;
 	private JLabel title;
 	private JRadioButtonMenuItem items[];
-	TextField text = new TextField(20);
     String styles[] = { "Itallic", "BOLD", "Reg" };
 
     
@@ -66,7 +65,7 @@ public class Picgui extends JFrame implements ActionListener
 	               {
 	                  JOptionPane.showMessageDialog( Picgui.this,
 	                     "On January 7th 2018 I am pledging to finish "
-	                     + "this program before my birthday! When I do"
+	                     + "this program before my birthday!\nWhen I do"
 	                     + " I will update this message.",
 	                     "About", JOptionPane.PLAIN_MESSAGE );
 	               }
@@ -101,7 +100,6 @@ public class Picgui extends JFrame implements ActionListener
 
 		//Add Buttons and Labels to Panels
 		reg.add(title);
-		reg.add(text,BorderLayout.NORTH);
 		reg.add(opn,BorderLayout.SOUTH);
 		this.add(reg);	//Add JPanel to frame
 		
@@ -128,31 +126,20 @@ public class Picgui extends JFrame implements ActionListener
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				pcpnl.add(text,BorderLayout.EAST);
 				pcpnl.add(opn2,BorderLayout.WEST);
 				pcpnl.add(updt,BorderLayout.SOUTH);
 				this.remove(reg);
 				this.add(pcpnl);
 				this.validate();			
 		}else if(e.getSource()== opn2) {
-				if (text.getText().isEmpty() == true)
-				{		
-					JOptionPane.showMessageDialog( null,
-		                     "Sorry but there is no input here.\n"
-		                     + "Please add input if you want t"
-		                     + "use the search function.",
-		                     "Error", JOptionPane.ERROR_MESSAGE );				
-				} else {
-					String path = "C:\\Users\\Necro\\Pictures\\Freezas.jpg";
 					Picopen po = new Picopen();
-					//BufferedImage image = null;
+					String path = po.getPath();
 					try {
 						po.openPic(path);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-				}
 			}else if(e.getSource()== updt) {
 				
 			}//End if

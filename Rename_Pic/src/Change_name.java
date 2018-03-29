@@ -75,7 +75,7 @@ public class Change_name extends JFrame implements ActionListener
 		directions.setBorder(BorderFactory.createLineBorder(Color.black));
 		directions.setBackground(this.getBackground());
 		change = new JButton("Update Names");
-		c.fill = GridBagConstraints.HORIZONTAL;
+		//c.fill = GridBagConstraints.HORIZONTAL;
 		change.addActionListener(this);
 		ok = new JButton("Create Folder");
 		ok.addActionListener(this);

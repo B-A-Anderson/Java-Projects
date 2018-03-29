@@ -1,7 +1,6 @@
 package pic;
 
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -16,6 +15,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 //Nested Class for Dialog Box
 class picFrame extends JDialog 
@@ -35,20 +35,11 @@ class picFrame extends JDialog
 	void addPic(ImageIcon i)
 	{
 		picbl = new JLabel(i);
-		picbl.revalidate();
+		picbl.revalidate();	
 		add(picbl);
 		picbl.repaint();
 	}
 	
-	void updtPic()
-	{
-		ImageIcon i = (ImageIcon) picbl.getIcon();
-		Image image = i.getImage();
-		Graphics g = image.getGraphics();
-		g.setFont(g.getFont().deriveFont(30f));
-	    g.drawString("Hello World!", 100, 100);
-	    g.dispose();
-	}
 }
 
 public class Picopen
@@ -56,7 +47,7 @@ public class Picopen
 	final String[] EXTENSIONS = new String[]{"png", "bmp", "jpg", "jpeg"};
 	
 	//Create a JFileChooser GUI to choose file.
-	JFileChooser choice = new JFileChooser( new File("C:\\Users\\Necro\\Pictures\\Descktop pics"));
+	JFileChooser choice = new JFileChooser( new File("C:\\Users\\Necro\\Pictures\\Descktop pics")); //Picture Locations
 	
 	Picopen()
 	{
@@ -67,7 +58,12 @@ public class Picopen
 	{
 		String path = null;
 		int returnVal = choice.showOpenDialog(null);
-		
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Extensions", EXTENSIONS); //Only files with the specified extensions should be visible
+		choice.setFileFilter(filter);
+		 if (returnVal == JFileChooser.APPROVE_OPTION) {
+			 File f = choice.getSelectedFile();
+			 path = f.getAbsolutePath();
+		 }
 		return path;
 	}
 	
@@ -79,7 +75,10 @@ public class Picopen
 		try {
 			image = new ImageIcon(ImageIO.read(new File(s)));
 		}catch (IOException e) {}
-	     picture.addPic(image);	     
+	     picture.addPic(image);
+	     int width = image.getIconWidth();
+	     int height = image.getIconHeight();
+	     picture.setBounds(0, 0, width, height);
 	     picture.repaint();
 	     picture.setVisible(true);
 	}
