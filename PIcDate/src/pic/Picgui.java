@@ -10,21 +10,16 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.swing.*;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 public class Picgui extends JFrame implements ActionListener 
 {
 	//Setup and Variables
-	private JPanel reg,pcpnl;
+	private JPanel reg,pcpnl, updpnl;
 	private JButton opn, opn2, updt;
-	private JLabel title;
+	private JLabel title,title2;
+	TextField text = new TextField(20);
 	private JRadioButtonMenuItem items[];
+	JMenuBar bar = new JMenuBar();  // create menu bar
     String styles[] = { "Itallic", "BOLD", "Reg" };
 
     
@@ -44,8 +39,11 @@ public class Picgui extends JFrame implements ActionListener
 		this.setSize(400, 500);
 		title = new JLabel ("Choose file to Update");
 		title.setFont(new Font("Cooper black", Font.PLAIN, 23));		
+		title2 = new JLabel ("Create Text for Picture");
+		title2.setFont(new Font("Arial black", Font.PLAIN, 25));
 		reg = new JPanel();
 		pcpnl = new JPanel();
+		updpnl = new JPanel();
 		opn = new JButton("Open Picture.");
 		opn.addActionListener(this);
 		opn2 = new JButton("Open Another Picture");
@@ -55,7 +53,6 @@ public class Picgui extends JFrame implements ActionListener
 		
 		// create File menu and Exit menu item
 		JMenu fileMenu = new JMenu( "File" );
-		JMenuBar bar = new JMenuBar();  // create menu bar
 		setJMenuBar( bar );  // set the menu bar for the JFrame	
 	    JMenuItem aboutItem = new JMenuItem( "About..." );
 	    aboutItem.setMnemonic( 'A' );
@@ -71,6 +68,18 @@ public class Picgui extends JFrame implements ActionListener
 	               }
 	            }
 	         );
+	    
+	    //Create save item for JMenu
+	    JMenuItem saveItem = new JMenuItem("Save");
+	    saveItem.setMnemonic('S');
+	    saveItem.addActionListener( 
+	             new ActionListener() {
+	                public void actionPerformed( ActionEvent e )
+	                {
+	                   savePic();
+	                }
+	             }
+	          );
 	    
 	    // create exit item for JMenu
 		JMenuItem exitItem = new JMenuItem( "Exit" );
@@ -107,6 +116,7 @@ public class Picgui extends JFrame implements ActionListener
 		
 		//Add items to the Menu
 		fileMenu.add(aboutItem);
+		fileMenu.add(saveItem);
 		fileMenu.add( exitItem );
 	    bar.add( fileMenu );    //Add File menu
 		
@@ -141,10 +151,45 @@ public class Picgui extends JFrame implements ActionListener
 						e1.printStackTrace();
 					}
 			}else if(e.getSource()== updt) {
+				this.remove(pcpnl);
+				this.add(updpnl);
+				updpnl.add(title2);
+				updpnl.add(text, BorderLayout.SOUTH);
+				JMenu tMenu = createMenu();
+				bar.add(tMenu);
+				this.validate();
 				
 			}//End if
 	}//end actionPerformed
-			
+	
+	public JMenu createMenu()
+	{
+		JMenu menu = new JMenu("TextBox");		
+		//Create TextBox Submenu
+		JMenu boxChoice = new JMenu("TextBox Styles");
+		String boxtypes[] = {"Regular", "Clear", "Shout", "tiny"};
+		ButtonGroup boxGroup = new ButtonGroup();
+		JRadioButtonMenuItem[] boxes = new JRadioButtonMenuItem[boxtypes.length];
+		for (String type : boxtypes)
+		{
+			JRadioButtonMenuItem Box = new JRadioButtonMenuItem(type);
+			boxChoice.add(Box);
+			boxGroup.add(Box);
+			//Box.addActionListener(arg0);
+		}
+		menu.add(boxChoice);
+		return menu;
+	}//End CreateMenu
+	
+	public void updPic()
+	{
+		
+	}//End updPic
+	
+	void savePic() 
+	{
+		
+	}//End savePic
 }//End Class
 
 
