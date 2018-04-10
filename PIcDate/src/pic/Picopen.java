@@ -27,7 +27,8 @@ class picFrame extends JDialog
 	
 	void addPic(ImageIcon i)
 	{
-		picbl = new JLabel(i);
+		//Create new JLabel with chosen image as the Background
+		picbl = new JLabel(i); 
 		picbl.revalidate();	
 		add(picbl);
 		picbl.repaint();
@@ -74,6 +75,12 @@ public class Picopen
 	     picture.setBounds(0, 0, width, height);
 	     picture.repaint();
 	     picture.setVisible(true);
+	}
+	
+	public void savePic(String path)
+	{
+		File outputfile = new File(path);
+	    //ImageIO.write(, "png", outputfile);
 	}
 	
 }

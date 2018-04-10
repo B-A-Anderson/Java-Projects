@@ -21,6 +21,7 @@ public class Picgui extends JFrame implements ActionListener
 	private JRadioButtonMenuItem items[];
 	JMenuBar bar = new JMenuBar();  // create menu bar
     String styles[] = { "Itallic", "BOLD", "Reg" };
+    String path;
 
     
     // Constructor
@@ -130,7 +131,7 @@ public class Picgui extends JFrame implements ActionListener
 				Picopen po = new Picopen();
 				//BufferedImage image = null;
 				try {
-					String path = po.getPath();
+					path = po.getPath();
 					po.openPic(path);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -164,8 +165,8 @@ public class Picgui extends JFrame implements ActionListener
 	
 	public JMenu createMenu()
 	{
-		JMenu menu = new JMenu("TextBox");		
 		//Create TextBox Submenu
+		JMenu menu = new JMenu("TextBox");				
 		JMenu boxChoice = new JMenu("TextBox Styles");
 		String boxtypes[] = {"Regular", "Clear", "Shout", "tiny"};
 		ButtonGroup boxGroup = new ButtonGroup();
@@ -188,7 +189,10 @@ public class Picgui extends JFrame implements ActionListener
 	
 	void savePic() 
 	{
+		Picopen po = new Picopen();
+		po.savePic(path);
 		
+
 	}//End savePic
 }//End Class
 
