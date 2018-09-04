@@ -55,21 +55,16 @@ public class Search4File
 	{
 		String nuname = fle.getAbsolutePath();
 		fle = new File(nuname);
-		for (final String ext : EXTENSIONS) 
-		  {
-              if (name.endsWith("." + ext))
-              {	
-              	System.out.println(name);
-              	try
-              	{	                	   
-              	    desktop.open(fle);
-              	}
-              	catch (IOException e) {
-                      e.printStackTrace();
-                  }
-              }//end if
-		  }//end for
-	}
+        if (fle.isDirectory()) {	
+          try {	                	   
+          	  desktop.open(fle);
+          	  }
+            catch (IOException e) {
+                   e.printStackTrace();
+               }
+           }//end if
+	}//end openFIle
+	
 	/*Updates the directory after every search to point to
 	The directory chosen in search*/
 	File updateDir(File d, String update)
@@ -104,16 +99,6 @@ public class Search4File
 					 dir = updateDir(dir,nuname); //Update Directory
 					 a = 0; // Reset count
 					 moreFiles = updateList(dir); //Update 
-			/*	}else if(dir.equals(lst)){ //If we reached the last item in the folder
-					if (nxt.isDirectory())
-					{
-						direct = updateDir(dir,moreFiles[f]); //return to original folder
-						dir = direct; //Move folders to next level
-						f++; //Update the count for the folders
-						a = 0; // Reset count
-					}else{
-						
-					}*/
 				}else{
 					a++; 
 				}//End if
