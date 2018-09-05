@@ -195,12 +195,13 @@ public class Guie extends JFrame implements ActionListener
 		{
 			String s = text.getText();
 			try {
-				String tList = search4(s);
+				search4(s);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
+		
 		if(e.getSource()== done)
 		{
 			this.dispose();
@@ -285,12 +286,11 @@ public class Guie extends JFrame implements ActionListener
 		return found;
 	}//end keepSearch
 	
-	String search4(String s) throws IOException
+	void search4(String s) throws IOException
 	{
 		Search4File file = new Search4File();
-		String foundit = "";
-		foundit = file.searchThrough(s, dir);
-		return foundit;
+		String[] foundit = file.searchThrough(s, dir);
+		createList(foundit);
 	}//end search4
 	
 	void openFound(String s)

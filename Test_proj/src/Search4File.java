@@ -1,6 +1,8 @@
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class Search4File 
@@ -79,32 +81,35 @@ public class Search4File
 		return nudir;
 	}
 
-	String searchThrough(String str, File direct) throws IOException 
+	String[] searchThrough(String str, File direct) throws IOException 
 	{	
 		dir = direct;
 		File reset = direct;
 		String nuname = null;
 		File [] moreFiles = updateList(dir);
-		int a = 0, f = 0;
+		Set<File> foundSet = new HashSet<File>();
+		int a = 0, b = 0, open = 0;
 		if (dir.isDirectory()) //Check if dir is a folder
 		{	
 			do{
-				nuname = moreFiles[a].getName();				
-				if (nuname.equals(str)) //If first element in directory equals string
-				{	
-					dir = updateDir(dir, nuname);
-					desktop.open(dir); // open it
-					break;
-			}else if (moreFiles[a].isDirectory()){ //else if first element in folder is another folder					
+				nuname = moreFiles[a].getName();
+				String searchname = nuname.toLowerCase().replaceAll("[_|.|-]", " ");
+				if (searchname.contains(str)) {//If first element in directory equals string
+					foundSet.add(moreFiles[a]);
+				}else if (moreFiles[a].isDirectory()){ //else if first element in folder is another folder					
 					 dir = updateDir(dir,nuname); //Update Directory
 					 a = 0; // Reset count
 					 moreFiles = updateList(dir); //Update 
-				}else{
-					a++; 
 				}//End if
-			}while(true);
+					a++; 
+			}while(a < moreFiles.length);
 	    }//End if
-		return nuname;
+		String [] names = new String[foundSet.size()];
+		for(File f : foundSet) {
+			names[b++] = f.getName();
+		}
+				
+		return names;
 	}//End search
 	
 	File [] updateList(File f)
